@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/crm/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/crm/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
+      <sourceFolder url="file://$MODULE_DIR$/crm/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
+      <sourceFolder url="file://$MODULE_DIR$/crm/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/elegant-bro/interfaces" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/otis22/vetmanager-token" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/otis22/vetmanager-url" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/otis22/php-interfaces" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/elegant-bro/stringify" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/otis22/vetmanager-rest-api" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/elegant-bro/arrayee" />
+      <excludeFolder url="file://$MODULE_DIR$/crm/vendor/laravel/breeze" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
