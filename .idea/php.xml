@@ -126,6 +126,7 @@
       <path value="$PROJECT_DIR$/crm/vendor/otis22/vetmanager-rest-api" />
       <path value="$PROJECT_DIR$/crm/vendor/elegant-bro/arrayee" />
       <path value="$PROJECT_DIR$/crm/vendor/laravel/breeze" />
+      <path value="$PROJECT_DIR$/crm/vendor/symfony/yaml" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

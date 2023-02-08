@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\UserSettingApi;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,6 +20,5 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('secret'),
         ]);
-
     }
 }
