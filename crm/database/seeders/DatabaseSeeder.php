@@ -20,5 +20,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('secret'),
         ]);
+
+        \App\Models\UserSettingApi::factory()->create([
+            'url' => 'devdeni24.vetmanager.ru',
+            'key' => '36819535a844c0c5077f309610386a7b',
+        ]);
     }
 }

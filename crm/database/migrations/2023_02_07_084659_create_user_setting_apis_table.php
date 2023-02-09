@@ -14,7 +14,7 @@ class CreateUserSettingApisTable extends Migration
     public function up()
     {
         Schema::create('user_setting_apis', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
             $table->string('url');
             $table->string('key');
             $table->timestamps();

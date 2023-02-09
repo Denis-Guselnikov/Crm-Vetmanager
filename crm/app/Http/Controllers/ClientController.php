@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Services\VetmanagerApi;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -12,10 +12,11 @@ class ClientController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function index()
     {
-        $clients = new VetmanagerApi();
+        $clients = (new VetmanagerApi(auth()->user()))->getClient();;
         return view('dashboard', ['clients' => $clients]);
     }
 
