@@ -4,16 +4,12 @@ namespace App\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
 use function Otis22\VetmanagerRestApi\uri;
-
 use App\Models\User;
 use GuzzleHttp\Client;
-//use GuzzleHttp\Exception\GuzzleException;
 
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use Otis22\VetmanagerRestApi\Query\Query;
 use Otis22\VetmanagerRestApi\Query\Sorts;
-use Otis22\VetmanagerRestApi\Query\SortBy;
-
 
 class VetmanagerApi
 {
@@ -22,8 +18,8 @@ class VetmanagerApi
 
     public function __construct(User $user)
     {
-        $this->key = '36819535a844c0c5077f309610386a7b';
-        $this->url = new Client(['base_url' => 'https://devdeni24.vetmanager2.ru']);
+        $this->key = $user->userSettingApi->key;
+        $this->url = new Client(['base_uri' => 'https://' . $user->userSettingApi->url]);
     }
 
     /**
@@ -33,7 +29,6 @@ class VetmanagerApi
     public function getClient()
     {
         $paged = PagedQuery::forGettingAll(new Query(new Sorts()));
-        //$paged = PagedQuery::forGettingAll(new Query());
         $model = 'client';
 
         $authHeaders = new \Otis22\VetmanagerRestApi\Headers\WithAuth(
@@ -46,7 +41,7 @@ class VetmanagerApi
             strval(
                 $this->url->request(
                     'GET',
-                    'https://devdeni24.vetmanager2.ru' . uri($model)->asString(),
+                    uri($model)->asString(),
                     [
                         'headers' => $authHeaders->asKeyValue(),
                         'query' => $paged->asKeyValue(),

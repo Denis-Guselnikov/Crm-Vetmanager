@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\VetmanagerApi;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -11,7 +14,7 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      * @throws GuzzleException
      */
     public function index()

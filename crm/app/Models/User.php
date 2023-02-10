@@ -13,11 +13,6 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * @var mixed
-     */
-    public $UserSettingApi;
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -47,8 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function usersettingapi()
+    public function userSettingApi()
     {
-        return $this->hasOne(UserSettingApi::class);
+        return $this->hasOne(UserSettingApi::class, 'id');
     }
 }
