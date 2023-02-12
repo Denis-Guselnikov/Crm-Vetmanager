@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Главная страница') }}
         </h2>
-        <div><a href="" class="btn btn-outline-primary">Добавить клиента</a></div>
+        <div><a href="{{ route('clients.create') }}" class="btn btn-outline-primary">Добавить клиента</a></div>
     </x-slot>
 
     {{--    Таблица START --}}

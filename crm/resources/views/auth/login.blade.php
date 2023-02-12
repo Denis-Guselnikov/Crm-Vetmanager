@@ -1,5 +1,9 @@
 <x-guest-layout>
 
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Login') }}
+    </h2>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')"/>
 
@@ -44,7 +48,7 @@
                 </a>
             @endif
 
-            <x-button class="ml-3">
+            <x-button class="btn btn-primary">
                 {{ __('Log in') }}
             </x-button>
         </div>

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\ValidatedInput;
 use function Otis22\VetmanagerRestApi\uri;
 use App\Models\User;
 use GuzzleHttp\Client;
@@ -51,5 +52,24 @@ class VetmanagerApi
             true
         );
         return $response['data'][$model];
+    }
+
+    public function createClient(ValidatedInput|array $validated)
+    {
+        $model = 'client';
+        $authHeaders = new \Otis22\VetmanagerRestApi\Headers\WithAuth(
+            new \Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey(
+                new \Otis22\VetmanagerRestApi\Headers\Auth\ApiKey($this->key)
+            )
+        );
+
+        $this->url->request(
+            'POST',
+            uri($model)->asString(),
+            [
+                'headers' => $authHeaders->asKeyValue(),
+                'json' => $validated
+            ]
+        )->getBody();
     }
 }

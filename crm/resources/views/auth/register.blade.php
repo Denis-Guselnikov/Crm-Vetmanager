@@ -1,5 +1,9 @@
 <x-guest-layout>
 
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Registration') }}
+    </h2>
+
     <!-- Validation Errors -->
     <x-auth-validation-errors class="mb-4" :errors="$errors"/>
 
@@ -45,7 +49,7 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-button class="ml-4">
+            <x-button class="btn btn-primary">
                 {{ __('Register') }}
             </x-button>
         </div>

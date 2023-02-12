@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientRequest;
 use App\Services\VetmanagerApi;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -19,18 +20,17 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = (new VetmanagerApi(auth()->user()))->getClient();;
+        $clients = (new VetmanagerApi(auth()->user()))->getClient();
         return view('dashboard', ['clients' => $clients]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('clients.create');
     }
 
     /**
@@ -41,7 +41,14 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'home_phone' => ['required'],
+            'email' => ['required', 'email'],
+        ]);
+        (new VetmanagerApi(auth()->user()))->createClient($validated);
+        return redirect('/dashboard');
     }
 
     /**

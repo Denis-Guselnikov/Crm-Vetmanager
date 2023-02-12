@@ -12,5 +12,6 @@ Route::get('/', function () {
 //})->middleware(['auth'])->name('dashboard');
 
 Route::get('/dashboard', [ClientController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::resource('clients', ClientController::class)->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
