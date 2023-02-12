@@ -8,34 +8,38 @@
 
     {{--    Таблица START --}}
     <div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Телефон</th>
-            <th>Почта</th>
-            <th>Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($clients as $client)
-        <tr>
-            <th scope="col">{{ $client['id'] }}</th>
-            <th scope="col">{{ $client['first_name'] }}</th>
-            <th scope="col">{{ $client['last_name'] }}</th>
-            <th scope="col">{{ $client['home_phone'] }}</th>
-            <th scope="col">{{ $client['email'] }}</th>
-            <th>
-            <a href="" class="btn btn-outline-danger">Удалить</a>
-            <a href="" class="btn btn-outline-secondary">Обновить</a>
-            <a href="" class="btn btn-outline-info">Инфо</a>
-            </th>
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Телефон</th>
+                <th>Почта</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($clients as $client)
+                <tr>
+                    <th scope="col">{{ $client['id'] }}</th>
+                    <th scope="col">{{ $client['first_name'] }}</th>
+                    <th scope="col">{{ $client['last_name'] }}</th>
+                    <th scope="col">{{ $client['home_phone'] }}</th>
+                    <th scope="col">{{ $client['email'] }}</th>
+                    <th>
+                        <form method="POST" action="{{ route('clients.destroy' , $client['id'])}}">
+                            {{ csrf_field() }}
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button type="submit" class="btn btn-outline-primary">Удалить</button>
+                        </form>
+                        <a href="" class="btn btn-outline-secondary">Обновить</a>
+                        <a href="" class="btn btn-outline-info">Инфо</a>
+                    </th>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
     {{--    Таблица END --}}
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClientRequest;
 use App\Services\VetmanagerApi;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -45,7 +44,7 @@ class ClientController extends Controller
             'first_name' => ['required'],
             'last_name' => ['required'],
             'home_phone' => ['required'],
-            'email' => ['required', 'email'],
+            'email' => ['required'],
         ]);
         (new VetmanagerApi(auth()->user()))->createClient($validated);
         return redirect('/dashboard');
@@ -54,10 +53,10 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -77,10 +76,10 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         //
     }
@@ -88,11 +87,12 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        (new VetmanagerApi(auth()->user()))->deleteClient($id);
+        return redirect('/dashboard');
     }
 }
