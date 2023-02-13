@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Страница Пользователя') }}
+            {{ __('Страница клиента: ')}} {{ $client['first_name'] }}
         </h2>
     </x-slot>
 
@@ -10,17 +10,21 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Ключ</th>
-                <th>Значение</th>
+                <th>#</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Телефон</th>
+                <th>Почта</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($client as $key =>$value)
                 <tr>
-                    <th scope="col">{{ $key }}</th>
-                    <th scope="col">{{ json_encode($value, JSON_UNESCAPED_UNICODE) }}</th>
+                    <th>{{ $client['id'] }}</th>
+                    <th>{{ $client['first_name'] }}</th>
+                    <th>{{ $client['last_name'] }}</th>
+                    <th>{{ $client['home_phone'] }}</th>
+                    <th>{{ $client['email'] }}</th>
                 </tr>
-            @endforeach
             </tbody>
         </table>
     </div>

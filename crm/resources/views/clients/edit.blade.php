@@ -3,8 +3,9 @@
         {{ __('Edit Client') }}
     </h2>
 
-    <form method="POST" action="">
+    <form method="POST" action="/clients/{{ $id }}">
         @csrf
+        {{ method_field('PUT') }}
 
         <div class="mt-2">
             <x-label for="first_name" :value="__('first_name')" />

@@ -25,7 +25,7 @@ class VetmanagerApi
     }
 
     // Api key auth
-    public function authHeaders()
+    private function authHeaders()
     {
         return new \Otis22\VetmanagerRestApi\Headers\WithAuth(
             new \Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey(
