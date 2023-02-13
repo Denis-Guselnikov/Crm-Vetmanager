@@ -19,7 +19,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = (new VetmanagerApi(auth()->user()))->getClient();
+        $clients = (new VetmanagerApi(auth()->user()))->getClients();
         return view('dashboard', ['clients' => $clients]);
     }
 
@@ -55,10 +55,12 @@ class ClientController extends Controller
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function show(int $id)
     {
-        //
+        $client = (new VetmanagerApi(auth()->user()))->getClient($id);
+        return view('clients.show', ['client' => $client]);
     }
 
     /**
@@ -67,9 +69,9 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        return view('clients.edit', ['id' => $id]);
     }
 
     /**
@@ -81,7 +83,14 @@ class ClientController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'home_phone' => ['required'],
+            'email' => ['required']
+        ]);
+        (new VetmanagerApi(auth()->user()))->editClient($validated, $id);
+        return redirect('/dashboard');
     }
 
     /**
@@ -89,6 +98,7 @@ class ClientController extends Controller
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function destroy(int $id)
     {

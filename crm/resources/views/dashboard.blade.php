@@ -33,8 +33,8 @@
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="btn btn-outline-primary">Удалить</button>
                         </form>
-                        <a href="" class="btn btn-outline-secondary">Обновить</a>
-                        <a href="" class="btn btn-outline-info">Инфо</a>
+                        <a href="{{ route('clients.edit', $client['id']) }}" class="btn btn-outline-secondary">Обновить</a>
+                        <a href="{{ route('clients.show', $client['id']) }}" class="btn btn-outline-info">Инфо</a>
                     </th>
                 </tr>
             @endforeach
