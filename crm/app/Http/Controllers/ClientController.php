@@ -105,4 +105,12 @@ class ClientController extends Controller
         (new VetmanagerApi(auth()->user()))->deleteClient($id);
         return redirect('/dashboard');
     }
+
+    // Поисковик
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $result = (new VetmanagerApi(auth()->user()))->searchClient($query);
+        return view('clients.search', ['result' => $result]);
+    }
 }

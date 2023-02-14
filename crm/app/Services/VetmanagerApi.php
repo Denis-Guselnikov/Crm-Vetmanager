@@ -131,4 +131,23 @@ class VetmanagerApi
             ]
         )->getBody();
     }
+
+    // Поисковик
+    public function searchClient($query)
+    {
+        $model = 'client';
+
+        $response = json_decode(
+            strval(
+                $this->client->request(
+                    'GET',
+                    uri($model)->asString(),
+                    ['headers' => $this->authHeaders()->asKeyValue()]
+                )->getBody()
+            ),
+            true
+        );
+        print_r($response['data'][$model]);
+        return $response['data'][$model];
+    }
 }

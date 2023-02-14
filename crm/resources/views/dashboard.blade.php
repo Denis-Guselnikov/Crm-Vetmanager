@@ -4,6 +4,12 @@
             {{ __('Главная страница') }}
         </h2>
         <div><a href="{{ route('clients.create') }}" class="btn btn-outline-primary">Добавить клиента</a></div>
+        <div class="col-md-2">
+            <form method="GET" action="/search">
+                <input type="text" id="query" name="query">
+                <button type="submit" class="btn btn-outline-primary">Поиск</button>
+            </form>
+        </div>
     </x-slot>
 
     {{--    Таблица START --}}
