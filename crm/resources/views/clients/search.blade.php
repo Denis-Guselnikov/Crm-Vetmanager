@@ -18,13 +18,15 @@
             </tr>
             </thead>
             <tbody>
+            @foreach($searchClient as $client)
                 <tr>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">{{ $client['id'] }}</th>
+                    <th scope="col">{{ $client['first_name'] }}</th>
+                    <th scope="col">{{ $client['last_name'] }}</th>
+                    <th scope="col">{{ $client['home_phone'] }}</th>
+                    <th scope="col">{{ $client['email'] }}</th>
                 </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

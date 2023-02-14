@@ -107,10 +107,14 @@ class ClientController extends Controller
     }
 
     // Поисковик
+
+    /**
+     * @throws GuzzleException
+     */
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $result = (new VetmanagerApi(auth()->user()))->searchClient($query);
-        return view('clients.search', ['result' => $result]);
+        $searchClient = (new VetmanagerApi(auth()->user()))->searchClient($query);
+        return view('clients.search', ['searchClient' => $searchClient]);
     }
 }

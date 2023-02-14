@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Главная страница') }}
         </h2>
-        <div><a href="{{ route('clients.create') }}" class="btn btn-outline-primary">Добавить клиента</a></div>
+
         <div class="col-md-2">
             <form method="GET" action="/search">
                 <input type="text" id="query" name="query">
@@ -14,6 +14,7 @@
 
     {{--    Таблица START --}}
     <div class="container">
+        <div><a href="{{ route('clients.create') }}" class="btn btn-outline-primary">Добавить клиента</a></div>
         <table class="table">
             <thead>
             <tr>

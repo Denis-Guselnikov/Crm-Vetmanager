@@ -6,10 +6,18 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
+use Otis22\VetmanagerRestApi\Query\Filter\NotEqualTo;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use Otis22\VetmanagerRestApi\Query\Query;
 use Otis22\VetmanagerRestApi\Query\Sorts;
 use Otis22\VetmanagerRestApi\Query\Filters;
+use Otis22\VetmanagerRestApi\Query\Filter\EqualTo;
+use Otis22\VetmanagerRestApi\Model\Property;
+use Otis22\VetmanagerRestApi\Query\Filter\Value\StringValue;
+
+use Otis22\VetmanagerRestApi\Headers\WithAuth;
+use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
+use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 
 use function Otis22\VetmanagerRestApi\uri;
 
@@ -25,11 +33,11 @@ class VetmanagerApi
     }
 
     // Api key auth
-    private function authHeaders()
+    private function authHeaders(): WithAuth
     {
-        return new \Otis22\VetmanagerRestApi\Headers\WithAuth(
-            new \Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey(
-                new \Otis22\VetmanagerRestApi\Headers\Auth\ApiKey($this->key)
+        return new WithAuth(
+            new ByApiKey(
+                new ApiKey($this->key)
             )
         );
     }
@@ -43,11 +51,11 @@ class VetmanagerApi
     {
         $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
             new Filters(
-                new \Otis22\VetmanagerRestApi\Query\Filter\EqualTo(
-                    new \Otis22\VetmanagerRestApi\Model\Property('status'),
-                    new \Otis22\VetmanagerRestApi\Query\Filter\Value\StringValue('active')
+                new EqualTo(
+                    new Property('status'),
+                    new StringValue('active')
                 )
-        )));
+            )));
         $model = 'client';
 
         $response = json_decode(
@@ -67,6 +75,11 @@ class VetmanagerApi
     }
 
     // Создать клиента
+
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
     public function createClient($validated): void
     {
         $model = 'client';
@@ -83,6 +96,7 @@ class VetmanagerApi
 
     /**
      * @throws GuzzleException
+     * @throws \Exception
      */
     // Удалить клиента
     public function deleteClient($id): void
@@ -95,11 +109,11 @@ class VetmanagerApi
         );
     }
 
+    // Получить клиента
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    // Получить клиента
     public function getClient(int $id)
     {
         $model = 'client';
@@ -118,6 +132,10 @@ class VetmanagerApi
     }
 
     // Редактировать клиента
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
     public function editClient($validated, int $id): void
     {
         $model = 'client';
@@ -133,8 +151,23 @@ class VetmanagerApi
     }
 
     // Поисковик
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
     public function searchClient($query)
     {
+        $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
+            new Filters(
+                new EqualTo(
+                    new Property('first_name'),
+                    new StringValue($query)
+                ),
+                new NotEqualTo(
+                    new Property('status'),
+                    new StringValue('DELETED')
+                )
+            )));
         $model = 'client';
 
         $response = json_decode(
@@ -142,12 +175,14 @@ class VetmanagerApi
                 $this->client->request(
                     'GET',
                     uri($model)->asString(),
-                    ['headers' => $this->authHeaders()->asKeyValue()]
+                    [
+                        'headers' => $this->authHeaders()->asKeyValue(),
+                        'query' => $paged->asKeyValue(),
+                    ]
                 )->getBody()
             ),
             true
         );
-        print_r($response['data'][$model]);
         return $response['data'][$model];
     }
 }
