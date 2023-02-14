@@ -7,6 +7,7 @@
 
     {{--    Таблица START --}}
     <div class="container">
+        <div><a href="{{ route('pet.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a></div>
         <table class="table">
             <thead>
             <tr>

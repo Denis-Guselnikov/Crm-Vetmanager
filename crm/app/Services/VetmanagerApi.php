@@ -23,6 +23,9 @@ use function Otis22\VetmanagerRestApi\uri;
 
 class VetmanagerApi
 {
+    const CLIENT_MODEL = 'client';
+    const PET_MODEL = 'pet';
+
     private $key;
     private Client $client;
 
@@ -80,9 +83,9 @@ class VetmanagerApi
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function createClient($validated): void
+    public function createClient(string $model, $validated): void
     {
-        $model = 'client';
+        //$model = 'client';
 
         $this->client->request(
             'POST',

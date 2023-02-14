@@ -46,7 +46,7 @@ class ClientController extends Controller
             'home_phone' => ['required'],
             'email' => ['required'],
         ]);
-        (new VetmanagerApi(auth()->user()))->createClient($validated);
+        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::CLIENT_MODEL, $validated);
         return redirect('/dashboard');
     }
 
