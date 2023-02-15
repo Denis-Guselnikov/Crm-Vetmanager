@@ -45,7 +45,6 @@ class PetController extends Controller
             'breed_id' => ['required'],
         ]);
         (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::PET, $validated);
-
         return redirect("/clients/{$validated['owner_id']}");
     }
 

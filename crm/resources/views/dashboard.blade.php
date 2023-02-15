@@ -38,7 +38,7 @@
                         <form method="POST" action="{{ route('clients.destroy' , $client['id'])}}">
                             {{ csrf_field() }}
                             <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-outline-primary">Удалить</button>
+                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
                         </form>
                         <a href="{{ route('clients.edit', $client['id']) }}" class="btn btn-outline-secondary">Обновить</a>
                         <a href="{{ route('clients.show', $client['id']) }}" class="btn btn-outline-info">Инфо</a>

@@ -7,7 +7,8 @@
 
     {{-- Таблица Клиента START --}}
     <div class="container">
-        <div><a href="{{ route('pets.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a></div>
+        <div><a href="{{ route('pets.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a>
+        </div>
         <table class="table">
             <thead>
             <tr>
@@ -19,13 +20,13 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>{{ $client['id'] }}</th>
-                    <th>{{ $client['first_name'] }}</th>
-                    <th>{{ $client['last_name'] }}</th>
-                    <th>{{ $client['home_phone'] }}</th>
-                    <th>{{ $client['email'] }}</th>
-                </tr>
+            <tr>
+                <th>{{ $client['id'] }}</th>
+                <th>{{ $client['first_name'] }}</th>
+                <th>{{ $client['last_name'] }}</th>
+                <th>{{ $client['home_phone'] }}</th>
+                <th>{{ $client['email'] }}</th>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -47,21 +48,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th>1</th>
-                <th>NickName</th>
-                <th>Type</th>
-                <th>Breed</th>
-                <th>
-                    <a href="" class="btn btn-outline-danger">Удалить</a>
-                    <a href="" class="btn btn-outline-secondary">Обновить</a>
-                    <a href="" class="btn btn-outline-info">Инфо</a>
-                </th>
-            </tr>
+            @foreach($pets as $pet)
+                <tr>
+                    <th>{{ $pet['id'] }}</th>
+                    <th>{{ $pet['alias'] }}</th>
+                    <th>{{ $pet['type']['title'] }}</th>
+                    <th>{{ $pet['breed']['title'] }}</th>
+                    <th>
+                        <a href="" class="btn btn-outline-danger">Удалить</a>
+                        <a href="" class="btn btn-outline-secondary">Обновить</a>
+                        <a href="" class="btn btn-outline-info">Инфо</a>
+                    </th>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
     {{-- Таблица Питомцев END --}}
-
-
 </x-app-layout>

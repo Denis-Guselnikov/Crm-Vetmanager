@@ -189,6 +189,33 @@ class VetmanagerApi
 
     public function getPetsByClientId(int $id)
     {
-//        VetmanagerApi::PET
+        $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
+            new Filters(
+                new NotEqualTo(
+                    new Property('status'),
+                    new StringValue('DELETED')
+                ),
+                new EqualTo(
+                    new Property('owner_id'),
+                    new StringValue($id)
+                ),
+
+            )));
+        $model = 'pet';
+
+        $response = json_decode(
+            strval(
+                $this->client->request(
+                    'GET',
+                    uri($model)->asString(),
+                    [
+                        'headers' => $this->authHeaders()->asKeyValue(),
+                        'query' => $paged->asKeyValue(),
+                    ]
+                )->getBody()
+            ),
+            true
+        );
+        return $response['data'][$model];
     }
 }

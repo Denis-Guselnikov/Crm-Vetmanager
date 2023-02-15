@@ -61,7 +61,6 @@ class ClientController extends Controller
     {
         $client = (new VetmanagerApi(auth()->user()))->getClient($id);
         $pets = (new VetmanagerApi(auth()->user()))->getPetsByClientId($id);
-//        dd($pets);
         return view('clients.show', ['client' => $client, 'pets' => $pets]);
     }
 
