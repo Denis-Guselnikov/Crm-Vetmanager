@@ -5,9 +5,9 @@
         </h2>
     </x-slot>
 
-    {{--    Таблица START --}}
+    {{-- Таблица Клиента START --}}
     <div class="container">
-        <div><a href="{{ route('pet.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a></div>
+        <div><a href="{{ route('pets.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a></div>
         <table class="table">
             <thead>
             <tr>
@@ -29,6 +29,39 @@
             </tbody>
         </table>
     </div>
-    {{--    Таблица END --}}
+    {{-- Таблица Клиента END --}}
+
+    {{-- Таблица Питомцев START --}}
+    <div class="container">
+        <h4 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Питомцы:')}}
+        </h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Кличка</th>
+                <th>Вид</th>
+                <th>Порода</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>1</th>
+                <th>NickName</th>
+                <th>Type</th>
+                <th>Breed</th>
+                <th>
+                    <a href="" class="btn btn-outline-danger">Удалить</a>
+                    <a href="" class="btn btn-outline-secondary">Обновить</a>
+                    <a href="" class="btn btn-outline-info">Инфо</a>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    {{-- Таблица Питомцев END --}}
+
 
 </x-app-layout>

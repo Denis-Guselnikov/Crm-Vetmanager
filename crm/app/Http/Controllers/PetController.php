@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\VetmanagerApi;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class PetController extends Controller
@@ -20,11 +23,11 @@ class PetController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create($ownerId)
     {
-        return view('pet.create', ['ownerId' => $ownerId]);
+        return view('pets.create', ['ownerId' => $ownerId]);
     }
 
     /**
@@ -37,12 +40,13 @@ class PetController extends Controller
     {
         $validated = $request->validate([
             'owner_id' => ['required'],
-            'nickname' => ['required'],
+            'alias' => ['required'],
             'type_id' => ['required'],
             'breed_id' => ['required'],
         ]);
-        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::PET_MODEL, $validated);
-        return redirect('/clients.show');
+        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::PET, $validated);
+
+        return redirect("/clients/{$validated['owner_id']}");
     }
 
     /**

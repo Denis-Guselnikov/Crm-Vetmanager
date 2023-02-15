@@ -19,7 +19,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = (new VetmanagerApi(auth()->user()))->getClients();
+        $clients = (new VetmanagerApi(auth()->user()))->getClients(VetmanagerApi::CLIENT);
         return view('dashboard', ['clients' => $clients]);
     }
 
@@ -35,7 +35,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,7 +46,7 @@ class ClientController extends Controller
             'home_phone' => ['required'],
             'email' => ['required'],
         ]);
-        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::CLIENT_MODEL, $validated);
+        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::CLIENT, $validated);
         return redirect('/dashboard');
     }
 
@@ -60,13 +60,15 @@ class ClientController extends Controller
     public function show(int $id)
     {
         $client = (new VetmanagerApi(auth()->user()))->getClient($id);
-        return view('clients.show', ['client' => $client]);
+        $pets = (new VetmanagerApi(auth()->user()))->getPetsByClientId($id);
+//        dd($pets);
+        return view('clients.show', ['client' => $client, 'pets' => $pets]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
@@ -77,7 +79,7 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return \Illuminate\Http\Response
      */

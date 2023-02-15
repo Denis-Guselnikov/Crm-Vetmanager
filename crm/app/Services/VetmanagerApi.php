@@ -23,8 +23,8 @@ use function Otis22\VetmanagerRestApi\uri;
 
 class VetmanagerApi
 {
-    const CLIENT_MODEL = 'client';
-    const PET_MODEL = 'pet';
+    const CLIENT = 'client';
+    const PET = 'pet';
 
     private $key;
     private Client $client;
@@ -45,12 +45,12 @@ class VetmanagerApi
         );
     }
 
+    // Получить всех активных клиентов
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    // Получить всех активных клиентов
-    public function getClients()
+    public function getClients(string $model)
     {
         $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
             new Filters(
@@ -59,7 +59,6 @@ class VetmanagerApi
                     new StringValue('active')
                 )
             )));
-        $model = 'client';
 
         $response = json_decode(
             strval(
@@ -78,15 +77,14 @@ class VetmanagerApi
     }
 
     // Создать клиента
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
     public function createClient(string $model, $validated): void
     {
-        //$model = 'client';
-
+        //dd($model);
+        //dd($validated);
         $this->client->request(
             'POST',
             uri($model)->asString(),
@@ -97,11 +95,11 @@ class VetmanagerApi
         )->getBody();
     }
 
+    // Удалить клиента
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    // Удалить клиента
     public function deleteClient($id): void
     {
         $model = 'client';
@@ -187,5 +185,10 @@ class VetmanagerApi
             true
         );
         return $response['data'][$model];
+    }
+
+    public function getPetsByClientId(int $id)
+    {
+//        VetmanagerApi::PET
     }
 }
