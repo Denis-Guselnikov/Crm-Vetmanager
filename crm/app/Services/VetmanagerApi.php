@@ -100,10 +100,8 @@ class VetmanagerApi
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function deleteClient($id): void
+    public function deleteClient(string $model, int $id): void
     {
-        $model = 'client';
-
         $this->client->delete(
             uri($model)->asString() . "/$id",
             ['headers' => $this->authHeaders()->asKeyValue()]
@@ -115,10 +113,8 @@ class VetmanagerApi
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function getClient(int $id)
+    public function getClient(string $model, int $id)
     {
-        $model = 'client';
-
         $response = json_decode(
             strval(
                 $this->client->request(
@@ -137,10 +133,8 @@ class VetmanagerApi
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function editClient($validated, int $id): void
+    public function editClient(string $model, $validated, int $id): void
     {
-        $model = 'client';
-
         $this->client->request(
             'PUT',
             uri($model)->asString() . "/$id",

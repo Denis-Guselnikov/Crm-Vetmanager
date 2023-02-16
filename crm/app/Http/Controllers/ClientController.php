@@ -59,7 +59,7 @@ class ClientController extends Controller
      */
     public function show(int $id)
     {
-        $client = (new VetmanagerApi(auth()->user()))->getClient($id);
+        $client = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::CLIENT, $id);
         $pets = (new VetmanagerApi(auth()->user()))->getPetsByClientId($id);
         return view('clients.show', ['client' => $client, 'pets' => $pets]);
     }
@@ -90,7 +90,7 @@ class ClientController extends Controller
             'home_phone' => ['required'],
             'email' => ['required']
         ]);
-        (new VetmanagerApi(auth()->user()))->editClient($validated, $id);
+        (new VetmanagerApi(auth()->user()))->editClient(VetmanagerApi::CLIENT, $validated, $id);
         return redirect('/dashboard');
     }
 
@@ -103,7 +103,7 @@ class ClientController extends Controller
      */
     public function destroy(int $id)
     {
-        (new VetmanagerApi(auth()->user()))->deleteClient($id);
+        (new VetmanagerApi(auth()->user()))->deleteClient(VetmanagerApi::CLIENT, $id);
         return redirect('/dashboard');
     }
 

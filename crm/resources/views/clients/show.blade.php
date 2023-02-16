@@ -7,8 +7,7 @@
 
     {{-- Таблица Клиента START --}}
     <div class="container">
-        <div><a href="{{ route('pets.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a>
-        </div>
+        <div><a href="{{ route('pets.create', $client['id']) }}" class="btn btn-outline-primary">Добавить Питомца</a></div>
         <table class="table">
             <thead>
             <tr>
@@ -55,9 +54,13 @@
                     <th>{{ $pet['type']['title'] }}</th>
                     <th>{{ $pet['breed']['title'] }}</th>
                     <th>
-                        <a href="" class="btn btn-outline-danger">Удалить</a>
-                        <a href="" class="btn btn-outline-secondary">Обновить</a>
-                        <a href="" class="btn btn-outline-info">Инфо</a>
+                        <form method="POST" action="{{ route('pet.destroy', $pet['id']) }}">
+                            {{ csrf_field() }}
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                        </form>
+                        <a href="{{ route('pet.edit', $pet['id']) }}" class="btn btn-outline-secondary">Обновить</a>
+                        <a href="{{ route('pet.show', $pet['id']) }}" class="btn btn-outline-info">Инфо</a>
                     </th>
                 </tr>
             @endforeach

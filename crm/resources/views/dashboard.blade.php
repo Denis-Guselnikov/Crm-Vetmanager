@@ -35,7 +35,7 @@
                     <th scope="col">{{ $client['home_phone'] }}</th>
                     <th scope="col">{{ $client['email'] }}</th>
                     <th>
-                        <form method="POST" action="{{ route('clients.destroy' , $client['id'])}}">
+                        <form method="POST" action="{{ route('clients.destroy', $client['id']) }}">
                             {{ csrf_field() }}
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="btn btn-outline-danger">Удалить</button>
