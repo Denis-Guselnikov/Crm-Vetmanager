@@ -4,7 +4,7 @@
         {{ __('Редактировать Питомца') }}
     </h2>
 
-    <form method="POST" action="/pet/{{ $id }}">
+    <form method="POST" action="{{ route('pet.update', $id) }}">
         @csrf
         {{ method_field('PUT') }}
 
