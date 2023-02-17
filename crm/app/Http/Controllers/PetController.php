@@ -70,7 +70,8 @@ class PetController extends Controller
      */
     public function edit(int $id)
     {
-        return view('pets.edit', ['id' => $id]);
+        $infoPet = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::PET, $id);
+        return view('pets.edit', ['id' => $id, 'infoPet' => $infoPet]);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\UserSettingApi;
 use App\Services\VetmanagerApi;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -72,7 +74,8 @@ class ClientController extends Controller
      */
     public function edit(int $id)
     {
-        return view('clients.edit', ['id' => $id]);
+        $infoClient = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::CLIENT, $id);
+        return view('clients.edit', ['infoClient' => $infoClient]);
     }
 
     /**

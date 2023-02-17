@@ -12,13 +12,14 @@ use Otis22\VetmanagerRestApi\Query\Query;
 use Otis22\VetmanagerRestApi\Query\Sorts;
 use Otis22\VetmanagerRestApi\Query\Filters;
 use Otis22\VetmanagerRestApi\Query\Filter\EqualTo;
-use Otis22\VetmanagerRestApi\Model\Property;
 use Otis22\VetmanagerRestApi\Query\Filter\Value\StringValue;
+use Otis22\VetmanagerRestApi\Query\Sort\AscBy;
 
 use Otis22\VetmanagerRestApi\Headers\WithAuth;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 
+use Otis22\VetmanagerRestApi\Model\Property;
 use function Otis22\VetmanagerRestApi\uri;
 
 class VetmanagerApi
@@ -52,7 +53,11 @@ class VetmanagerApi
      */
     public function getClients(string $model)
     {
-        $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
+        $paged = PagedQuery::forGettingAll(new Query(new Sorts(
+            new AscBy(
+                new Property('id')
+            )
+        ),
             new Filters(
                 new EqualTo(
                     new Property('status'),

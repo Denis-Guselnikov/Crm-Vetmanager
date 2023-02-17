@@ -3,28 +3,28 @@
         {{ __('Редактировать клиента') }}
     </h2>
 
-    <form method="POST" action="/clients/{{ $id }}">
+    <form method="POST" action="/clients/{{ $infoClient['id'] }}">
         @csrf
         {{ method_field('PUT') }}
 
         <div class="mt-2">
             <x-label for="first_name" :value="__('first_name')" />
-            <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus />
+            <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" value="{{ $infoClient['first_name'] }}" required autofocus />
         </div>
 
         <div class="mt-2">
             <x-label for="last_name" :value="__('last_name')" />
-            <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus />
+            <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" value="{{ $infoClient['last_name'] }}" required autofocus />
         </div>
 
         <div class="mt-2">
             <x-label for="home_phone" :value="__('home_phone')" />
-            <x-input id="home_phone" class="block mt-1 w-full" type="text" name="home_phone" :value="old('home_phone')" required autofocus />
+            <x-input id="home_phone" class="block mt-1 w-full" type="text" name="home_phone" value="{{ $infoClient['home_phone'] }}" required autofocus />
         </div>
 
         <div class="mt-2">
             <x-label for="email" :value="__('Email')" />
-            <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            <x-input id="email" class="block mt-1 w-full" type="email" name="email" value="{{ $infoClient['email'] }}" required />
         </div>
 
         <div class="flex items-center justify-end mt-4">
