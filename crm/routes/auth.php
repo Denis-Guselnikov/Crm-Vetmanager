@@ -53,4 +53,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+//    Route::get('reset-api-key', function () {
+//        return view('auth.api-key-reset');
+//    });
+//
+//    Route::post('reset-api-key', [RegisteredUserController::class, 'editUserSettindApi'])
+//        ->name('reset-api-key');
 });

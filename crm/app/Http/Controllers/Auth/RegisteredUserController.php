@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserSettingApi;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -37,6 +38,8 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'url' => ['required', 'string'],
+            'key' => ['required', 'string'],
         ]);
 
         $user = User::create([
@@ -45,10 +48,25 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        UserSettingApi::create([
+            'url' => $request->url,
+            'key' => $request->key,
+        ]);
+
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+//    public function editUserSettindApi(Request $request)
+//    {
+//        UserSettingApi::create([
+//            'url' => $request->url,
+//            'key' => $request->key,
+//        ]);
+//
+//        return redirect(RouteServiceProvider::HOME);
+//    }
 }

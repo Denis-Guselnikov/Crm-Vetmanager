@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\UserSettingApi::factory()->create([
-            'url' => 'devdeni24.vetmanager2.ru',
+            'url' => 'https://devdeni24.vetmanager2.ru',
             'key' => '36819535a844c0c5077f309610386a7b',
         ]);
     }

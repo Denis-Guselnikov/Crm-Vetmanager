@@ -14,6 +14,7 @@ use Otis22\VetmanagerRestApi\Query\Filters;
 use Otis22\VetmanagerRestApi\Query\Filter\EqualTo;
 use Otis22\VetmanagerRestApi\Query\Filter\Value\StringValue;
 use Otis22\VetmanagerRestApi\Query\Sort\AscBy;
+use Otis22\VetmanagerRestApi\Query\Sort\DescBy;
 
 use Otis22\VetmanagerRestApi\Headers\WithAuth;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
@@ -33,7 +34,7 @@ class VetmanagerApi
     public function __construct(User $user)
     {
         $this->key = $user->userSettingApi->key;
-        $this->client = new Client(['base_uri' => 'https://' . $user->userSettingApi->url]);
+        $this->client = new Client(['base_uri' => $user->userSettingApi->url]);
     }
 
     // Api key auth
@@ -47,13 +48,14 @@ class VetmanagerApi
     }
 
     // Получить всех активных клиентов
+
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
     public function getClients(string $model)
     {
-        $paged = PagedQuery::forGettingAll(new Query(new Sorts(
+        $paged = PagedQuery::forGettingTop(new Query(new Sorts(
             new AscBy(
                 new Property('id')
             )
@@ -63,7 +65,7 @@ class VetmanagerApi
                     new Property('status'),
                     new StringValue('active')
                 )
-            )));
+            )), 50);
 
         $response = json_decode(
             strval(
@@ -82,14 +84,13 @@ class VetmanagerApi
     }
 
     // Создать клиента
+
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
     public function createClient(string $model, $validated): void
     {
-        //dd($model);
-        //dd($validated);
         $this->client->request(
             'POST',
             uri($model)->asString(),
@@ -101,6 +102,7 @@ class VetmanagerApi
     }
 
     // Удалить клиента
+
     /**
      * @throws GuzzleException
      * @throws \Exception
@@ -114,6 +116,7 @@ class VetmanagerApi
     }
 
     // Получить клиента
+
     /**
      * @throws GuzzleException
      * @throws \Exception
@@ -134,6 +137,7 @@ class VetmanagerApi
     }
 
     // Редактировать клиента
+
     /**
      * @throws GuzzleException
      * @throws \Exception
@@ -151,13 +155,18 @@ class VetmanagerApi
     }
 
     // Поисковик
+
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
     public function searchClient($query)
     {
-        $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
+        $paged = PagedQuery::forGettingTop(new Query(new Sorts(
+            new DescBy(
+                new Property('id')
+            )
+        ),
             new Filters(
                 new EqualTo(
                     new Property('first_name'),
@@ -167,7 +176,7 @@ class VetmanagerApi
                     new Property('status'),
                     new StringValue('DELETED')
                 )
-            )));
+            )), 50);
         $model = 'client';
 
         $response = json_decode(
@@ -216,5 +225,31 @@ class VetmanagerApi
             true
         );
         return $response['data'][$model];
+    }
+
+    static function checkUserSattings(string $key, string $url): bool
+    {
+        $client = new Client(['base_uri' => $url]);
+        $authHeaders = new WithAuth(
+            new ByApiKey(
+                new ApiKey($key)
+            )
+        );
+
+        $response = json_decode(
+            strval(
+                $client->request(
+                    'GET',
+                    '/rest/api/user',
+                    ['headers' => $authHeaders->asKeyValue()]
+                )->getBody()
+            ),
+            true
+        );
+
+        if ($response['success']) {
+            return true;
+        }
+        return false;
     }
 }
