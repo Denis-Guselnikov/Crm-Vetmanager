@@ -36,14 +36,16 @@
         <h4 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Питомцы:')}}
         </h4>
-        <table class="table">
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Кличка</th>
                 <th>Вид</th>
                 <th>Порода</th>
-                <th>Действия</th>
+                <th class="col-1">Редактировать</th>
+                <th class="col-1">Информация</th>
+                <th class="col-1">Удалить</th>
             </tr>
             </thead>
             <tbody>
@@ -54,13 +56,17 @@
                     <th>{{ $pet['type']['title'] }}</th>
                     <th>{{ $pet['breed']['title'] }}</th>
                     <th>
+                        <a href="{{ route('pet.edit', $pet['id']) }}" class="btn btn-outline-secondary">edit</a>
+                    </th>
+                    <th>
+                        <a href="{{ route('pet.show', $pet['id']) }}" class="btn btn-outline-info">info</a>
+                    </th>
+                    <th>
                         <form method="POST" action="{{ route('pet.destroy', $pet['id']) }}">
                             {{ csrf_field() }}
                             <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                            <button type="submit" class="btn btn-outline-danger">delete</button>
                         </form>
-                        <a href="{{ route('pet.edit', $pet['id']) }}" class="btn btn-outline-secondary">Обновить</a>
-                        <a href="{{ route('pet.show', $pet['id']) }}" class="btn btn-outline-info">Инфо</a>
                     </th>
                 </tr>
             @endforeach

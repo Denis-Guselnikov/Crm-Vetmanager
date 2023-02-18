@@ -4,7 +4,7 @@
             {{ __('Главная страница') }}
         </h2>
 
-        <div class="col-md-2">
+        <div class="row justify-content-center mb-3 col-12 col-md-4">
             <form method="GET" action="/search">
                 <input type="text" id="query" name="query">
                 <button type="submit" class="btn btn-outline-primary">Поиск</button>
@@ -15,33 +15,39 @@
     {{--    Таблица START --}}
     <div class="container">
         <div><a href="{{ route('clients.create') }}" class="btn btn-outline-primary">Добавить клиента</a></div>
-        <table class="table">
+        <table class="table table-hover">
             <thead>
             <tr>
-                <th>#</th>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Телефон</th>
-                <th>Почта</th>
-                <th>Действия</th>
+                <th scope="col">#</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Почта</th>
+                <th class="col-1">Редактировать</th>
+                <th class="col-1">Информация</th>
+                <th class="col-1">Удалить</th>
             </tr>
             </thead>
             <tbody>
             @foreach($clients as $client)
                 <tr>
-                    <th scope="col">{{ $client['id'] }}</th>
-                    <th scope="col">{{ $client['first_name'] }}</th>
-                    <th scope="col">{{ $client['last_name'] }}</th>
-                    <th scope="col">{{ $client['home_phone'] }}</th>
-                    <th scope="col">{{ $client['email'] }}</th>
+                    <th>{{ $client['id'] }}</th>
+                    <th>{{ $client['first_name'] }}</th>
+                    <th>{{ $client['last_name'] }}</th>
+                    <th>{{ $client['home_phone'] }}</th>
+                    <th>{{ $client['email'] }}</th>
+                    <th>
+                        <a href="{{ route('clients.edit', $client['id']) }}" class="btn btn-outline-secondary">edit</a>
+                    </th>
+                    <th>
+                        <a href="{{ route('clients.show', $client['id']) }}" class="btn btn-outline-info">info</a>
+                    </th>
                     <th>
                         <form method="POST" action="{{ route('clients.destroy', $client['id']) }}">
                             {{ csrf_field() }}
                             <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                            <button type="submit" class="btn btn-outline-danger">delete</button>
                         </form>
-                        <a href="{{ route('clients.edit', $client['id']) }}" class="btn btn-outline-secondary">Обновить</a>
-                        <a href="{{ route('clients.show', $client['id']) }}" class="btn btn-outline-info">Инфо</a>
                     </th>
                 </tr>
             @endforeach
