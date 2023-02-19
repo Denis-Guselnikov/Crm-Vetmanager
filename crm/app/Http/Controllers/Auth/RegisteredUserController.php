@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -49,10 +49,13 @@ class RegisteredUserController extends Controller
 
     public function editUserSettindApi(Request $request)
     {
-        UserSettingApi::create([
-            'url' => $request->url,
-            'key' => $request->key,
+        $validated = $request->validate([
+            'url' => ['required', 'string'],
+            'key' => ['required', 'string'],
         ]);
+        $userSettingApi = UserSettingApi::find(auth()->user()->id);
+        $userSettingApi->fill($validated);
+        $userSettingApi->save();
 
         return redirect(RouteServiceProvider::HOME);
     }
