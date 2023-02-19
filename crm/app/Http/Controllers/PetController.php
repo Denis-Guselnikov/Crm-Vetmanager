@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PetRequest;
 use App\Services\VetmanagerApi;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -37,14 +38,9 @@ class PetController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PetRequest $request)
     {
-        $validated = $request->validate([
-            'owner_id' => ['required'],
-            'alias' => ['required'],
-            'type_id' => ['required'],
-            'breed_id' => ['required'],
-        ]);
+        $validated = $request->validated();
         (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::PET, $validated);
         return redirect("/clients/{$validated['owner_id']}");
     }

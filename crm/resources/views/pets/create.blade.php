@@ -19,14 +19,12 @@
                 <x-label for="type_id" :value="__('Вид_id')"/>
                 <x-input id="type_id" class="block mt-1 w-full" type="text" name="type_id" :value="old('type_id')"
                          required autofocus/>
-
             </div>
 
             <div class="row justify-content-center mb-3 col-12 col-md-4">
                 <x-label for="breed_id" :value="__('Порода_id')"/>
                 <x-input id="breed_id" class="block mt-1 w-full" type="text" name="breed_id" :value="old('breed_id')"
                          required autofocus/>
-
             </div>
 
             <div class="flex items-center justify-end mt-4">

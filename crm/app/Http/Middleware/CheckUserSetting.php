@@ -18,12 +18,12 @@ class CheckUserSetting
     public function handle(Request $request, Closure $next)
     {
         try {
-            if (VetmanagerApi::checkUserSattings(auth()->user()->userSettingApi->key, auth()->user()->userSettingApi->url)) {
+            if (VetmanagerApi::checkUserSettings(auth()->user()->userSettingApi->key, auth()->user()->userSettingApi->url)) {
                 return $next($request);
             }
         } catch (\Exception $e) {
-            echo 'Выброшено исключение: Неправильный Url или ApiKey ',  $e->getMessage(), "\n";
-            //return redirect('reset-api-key');
+            //echo 'Выброшено исключение: Неправильный Url или ApiKey ',  $e->getMessage(), "\n";
+            return redirect('reset-api-key');
         }
     }
 }

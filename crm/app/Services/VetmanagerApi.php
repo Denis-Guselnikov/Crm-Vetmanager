@@ -227,7 +227,7 @@ class VetmanagerApi
         return $response['data'][$model];
     }
 
-    static function checkUserSattings(string $key, string $url): bool
+    static function checkUserSettings(string $key, string $url): bool
     {
         $client = new Client(['base_uri' => $url]);
         $authHeaders = new WithAuth(

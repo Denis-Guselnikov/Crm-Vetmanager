@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\UserSettingApi;
 use App\Services\VetmanagerApi;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+
+use App\Http\Requests\ClientRequest;
 
 class ClientController extends Controller
 {
@@ -40,14 +40,9 @@ class ClientController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientRequest $request)
     {
-        $validated = $request->validate([
-            'first_name' => ['required'],
-            'last_name' => ['required'],
-            'home_phone' => ['required'],
-            'email' => ['required'],
-        ]);
+        $validated = $request->validated();
         (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::CLIENT, $validated);
         return redirect('/dashboard');
     }
@@ -85,14 +80,9 @@ class ClientController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(ClientRequest $request, int $id)
     {
-        $validated = $request->validate([
-            'first_name' => ['required'],
-            'last_name' => ['required'],
-            'home_phone' => ['required'],
-            'email' => ['required']
-        ]);
+        $validated = $request->validated();
         (new VetmanagerApi(auth()->user()))->editClient(VetmanagerApi::CLIENT, $validated, $id);
         return redirect('/dashboard');
     }
