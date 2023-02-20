@@ -21,7 +21,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = (new VetmanagerApi(auth()->user()))->getClients(VetmanagerApi::CLIENT);
+        $clients = (new VetmanagerApi(auth()->user()))->getAll(VetmanagerApi::CLIENT);
         return view('dashboard', ['clients' => $clients]);
     }
 
@@ -39,11 +39,12 @@ class ClientController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function store(ClientRequest $request)
     {
         $validated = $request->validated();
-        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::CLIENT, $validated);
+        (new VetmanagerApi(auth()->user()))->create(VetmanagerApi::CLIENT, $validated);
         return redirect('/dashboard');
     }
 
@@ -56,7 +57,7 @@ class ClientController extends Controller
      */
     public function show(int $id)
     {
-        $client = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::CLIENT, $id);
+        $client = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::CLIENT, $id);
         $pets = (new VetmanagerApi(auth()->user()))->getPetsByClientId($id);
         return view('clients.show', ['client' => $client, 'pets' => $pets]);
     }
@@ -66,10 +67,11 @@ class ClientController extends Controller
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function edit(int $id)
     {
-        $infoClient = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::CLIENT, $id);
+        $infoClient = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::CLIENT, $id);
         return view('clients.edit', ['infoClient' => $infoClient]);
     }
 
@@ -79,11 +81,12 @@ class ClientController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function update(ClientRequest $request, int $id)
     {
         $validated = $request->validated();
-        (new VetmanagerApi(auth()->user()))->editClient(VetmanagerApi::CLIENT, $validated, $id);
+        (new VetmanagerApi(auth()->user()))->edit(VetmanagerApi::CLIENT, $validated, $id);
         return redirect('/dashboard');
     }
 
@@ -96,7 +99,7 @@ class ClientController extends Controller
      */
     public function destroy(int $id)
     {
-        (new VetmanagerApi(auth()->user()))->deleteClient(VetmanagerApi::CLIENT, $id);
+        (new VetmanagerApi(auth()->user()))->delete(VetmanagerApi::CLIENT, $id);
         return redirect('/dashboard');
     }
 

@@ -8,6 +8,8 @@
             @csrf
             {{ method_field('PUT') }}
 
+            <input type="hidden" name="owner_id" value="{{ $infoPet['owner_id'] }}">
+
             <div class="row justify-content-center mb-3 col-12 col-md-4">
                 <x-label for="alias" :value="__('Кличка')"/>
                 <x-input id="alias" class="block mt-1 w-full" type="text" name="alias" value="{{ $infoPet['alias'] }}"

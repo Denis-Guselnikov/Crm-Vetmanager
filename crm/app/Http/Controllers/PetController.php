@@ -37,11 +37,12 @@ class PetController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function store(PetRequest $request)
     {
         $validated = $request->validated();
-        (new VetmanagerApi(auth()->user()))->createClient(VetmanagerApi::PET, $validated);
+        (new VetmanagerApi(auth()->user()))->create(VetmanagerApi::PET, $validated);
         return redirect("/clients/{$validated['owner_id']}");
     }
 
@@ -54,7 +55,7 @@ class PetController extends Controller
      */
     public function show(int $id)
     {
-        $pet = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::PET, $id);
+        $pet = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::PET, $id);
         return view('pets.show', ['pet' => $pet]);
     }
 
@@ -63,10 +64,11 @@ class PetController extends Controller
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function edit(int $id)
     {
-        $infoPet = (new VetmanagerApi(auth()->user()))->getClient(VetmanagerApi::PET, $id);
+        $infoPet = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::PET, $id);
         return view('pets.edit', ['id' => $id, 'infoPet' => $infoPet]);
     }
 
@@ -76,15 +78,12 @@ class PetController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
-    public function update(Request $request, int $id)
+    public function update(PetRequest $request, int $id)
     {
-        $validated = $request->validate([
-            'alias' => ['required'],
-            'type_id' => ['required'],
-            'breed_id' => ['required'],
-        ]);
-        (new VetmanagerApi(auth()->user()))->editClient(VetmanagerApi::PET, $validated, $id);
+        $validated = $request->validated();
+        (new VetmanagerApi(auth()->user()))->edit(VetmanagerApi::PET, $validated, $id);
         return redirect("pet/$id");
     }
 
@@ -93,10 +92,12 @@ class PetController extends Controller
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws GuzzleException
      */
     public function destroy(int $id)
     {
-        (new VetmanagerApi(auth()->user()))->deleteClient(VetmanagerApi::PET, $id);
-        return redirect('dashboard');
+        $owner = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::PET, $id);
+        (new VetmanagerApi(auth()->user()))->delete(VetmanagerApi::PET, $id);
+        return redirect("clients/{$owner['owner_id']}");
     }
 }

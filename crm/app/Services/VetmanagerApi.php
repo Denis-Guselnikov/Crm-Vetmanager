@@ -15,6 +15,7 @@ use Otis22\VetmanagerRestApi\Query\Filter\EqualTo;
 use Otis22\VetmanagerRestApi\Query\Filter\Value\StringValue;
 use Otis22\VetmanagerRestApi\Query\Sort\AscBy;
 use Otis22\VetmanagerRestApi\Query\Sort\DescBy;
+use Otis22\VetmanagerRestApi\Query\Filter\Like;
 
 use Otis22\VetmanagerRestApi\Headers\WithAuth;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
@@ -47,13 +48,11 @@ class VetmanagerApi
         );
     }
 
-    // Получить всех активных клиентов
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function getClients(string $model)
+    public function getAll(string $model)
     {
         $paged = PagedQuery::forGettingTop(new Query(new Sorts(
             new AscBy(
@@ -83,13 +82,11 @@ class VetmanagerApi
         return $response['data'][$model];
     }
 
-    // Создать клиента
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function createClient(string $model, $validated): void
+    public function create(string $model, $validated): void
     {
         $this->client->request(
             'POST',
@@ -101,13 +98,11 @@ class VetmanagerApi
         )->getBody();
     }
 
-    // Удалить клиента
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function deleteClient(string $model, int $id): void
+    public function delete(string $model, int $id): void
     {
         $this->client->delete(
             uri($model)->asString() . "/$id",
@@ -115,13 +110,11 @@ class VetmanagerApi
         );
     }
 
-    // Получить клиента
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function getClient(string $model, int $id)
+    public function getOne(string $model, int $id)
     {
         $response = json_decode(
             strval(
@@ -136,13 +129,11 @@ class VetmanagerApi
         return $response['data'][$model];
     }
 
-    // Редактировать клиента
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function editClient(string $model, $validated, int $id): void
+    public function edit(string $model, $validated, int $id): void
     {
         $this->client->request(
             'PUT',
@@ -154,39 +145,23 @@ class VetmanagerApi
         )->getBody();
     }
 
-    // Поисковик
-
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function searchClient($query)
+    public function searchClient(string $query)
     {
-        $paged = PagedQuery::forGettingTop(new Query(new Sorts(
-            new DescBy(
-                new Property('id')
-            )
-        ),
-            new Filters(
-                new EqualTo(
-                    new Property('first_name'),
-                    new StringValue($query)
-                ),
-                new NotEqualTo(
-                    new Property('status'),
-                    new StringValue('DELETED')
-                )
-            )), 50);
+
         $model = 'client';
 
         $response = json_decode(
             strval(
                 $this->client->request(
                     'GET',
-                    uri($model)->asString(),
+                    uri($model)->asString() . "/clientsSearchData?search_query={$query}",
                     [
                         'headers' => $this->authHeaders()->asKeyValue(),
-                        'query' => $paged->asKeyValue(),
+                        //'query' => $paged->asKeyValue(),
                     ]
                 )->getBody()
             ),
@@ -195,6 +170,10 @@ class VetmanagerApi
         return $response['data'][$model];
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
     public function getPetsByClientId(int $id)
     {
         $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
@@ -227,6 +206,10 @@ class VetmanagerApi
         return $response['data'][$model];
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
     static function checkUserSettings(string $key, string $url): bool
     {
         $client = new Client(['base_uri' => $url]);
@@ -235,12 +218,13 @@ class VetmanagerApi
                 new ApiKey($key)
             )
         );
+        $model = 'user';
 
         $response = json_decode(
             strval(
                 $client->request(
                     'GET',
-                    '/rest/api/user',
+                    uri($model)->asString(),
                     ['headers' => $authHeaders->asKeyValue()]
                 )->getBody()
             ),

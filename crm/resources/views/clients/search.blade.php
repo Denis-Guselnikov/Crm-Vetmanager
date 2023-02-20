@@ -20,10 +20,10 @@
             <tbody>
             @foreach($searchClient as $client)
                 <tr>
-                    <th scope="col">{{ $client['id'] }}</th>
+                    <th scope="col">{{ $client['client_id'] }}</th>
                     <th scope="col">{{ $client['first_name'] }}</th>
                     <th scope="col">{{ $client['last_name'] }}</th>
-                    <th scope="col">{{ $client['home_phone'] }}</th>
+                    <th scope="col">{{ $client['cell_phone'] }}</th>
                     <th scope="col">{{ $client['email'] }}</th>
                 </tr>
             @endforeach
