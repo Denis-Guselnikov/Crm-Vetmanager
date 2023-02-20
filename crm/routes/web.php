@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'check.user.setting']) -> group(function() {
+Route::middleware(['auth', 'check.user.setting'])->group(function () {
     Route::get('/dashboard', [ClientController::class, 'index'])->name('dashboard');
     Route::get('/search', [ClientController::class, 'search']);
     Route::resource('clients', ClientController::class);

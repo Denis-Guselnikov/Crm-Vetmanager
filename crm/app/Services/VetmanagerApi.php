@@ -14,8 +14,6 @@ use Otis22\VetmanagerRestApi\Query\Filters;
 use Otis22\VetmanagerRestApi\Query\Filter\EqualTo;
 use Otis22\VetmanagerRestApi\Query\Filter\Value\StringValue;
 use Otis22\VetmanagerRestApi\Query\Sort\AscBy;
-use Otis22\VetmanagerRestApi\Query\Sort\DescBy;
-use Otis22\VetmanagerRestApi\Query\Filter\Like;
 
 use Otis22\VetmanagerRestApi\Headers\WithAuth;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
@@ -95,7 +93,7 @@ class VetmanagerApi
                 'headers' => $this->authHeaders()->asKeyValue(),
                 'json' => $validated
             ]
-        )->getBody();
+        );
     }
 
     /**
@@ -161,7 +159,6 @@ class VetmanagerApi
                     uri($model)->asString() . "/clientsSearchData?search_query={$query}",
                     [
                         'headers' => $this->authHeaders()->asKeyValue(),
-                        //'query' => $paged->asKeyValue(),
                     ]
                 )->getBody()
             ),
@@ -210,7 +207,7 @@ class VetmanagerApi
      * @throws GuzzleException
      * @throws \Exception
      */
-    static function checkUserSettings(string $key, string $url): bool
+    static function checkUserSettings(string $key, string $url): void
     {
         $client = new Client(['base_uri' => $url]);
         $authHeaders = new WithAuth(
@@ -231,9 +228,13 @@ class VetmanagerApi
             true
         );
 
-        if ($response['success']) {
-            return true;
+        if (
+            filter_var(
+                $response['success'],
+                FILTER_VALIDATE_BOOL
+            ) === false
+        ) {
+            throw new \Exception("Wrong user settings");
         }
-        return false;
     }
 }
