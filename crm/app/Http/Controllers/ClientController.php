@@ -13,6 +13,8 @@ use App\Http\Requests\ClientRequest;
 
 class ClientController extends Controller
 {
+    const CLIENT = 'client';
+
     /**
      * Display a listing of the resource.
      *

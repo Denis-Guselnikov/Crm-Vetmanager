@@ -8,11 +8,11 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
+    const PET = 'pet';
     /**
      * Display a listing of the resource.
      *
