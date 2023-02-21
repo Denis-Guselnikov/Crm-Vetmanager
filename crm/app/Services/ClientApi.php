@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -26,7 +27,7 @@ class ClientApi
 {
     private Client $client;
     private $key;
-    private $model;
+    private string $model;
 
     public function __construct(User $user, $model)
     {
@@ -45,6 +46,10 @@ class ClientApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
     public function getClients()
     {
         $paged = PagedQuery::forGettingTop(new Query(new Sorts(
@@ -75,6 +80,10 @@ class ClientApi
         return $response['data'][$this->model];
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
     public function getClient(int $id)
     {
         $response = json_decode(
@@ -90,7 +99,11 @@ class ClientApi
         return $response['data'][$this->model];
     }
 
-    public function createClient($validated)
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    public function createClient($validated): void
     {
         $this->client->request(
             'POST',
@@ -102,15 +115,23 @@ class ClientApi
         );
     }
 
-    public function deleteClient(int $id)
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    public function deleteClient(int $id): void
     {
-        $this->client->deleteClient(
+        $this->client->delete(
             uri($this->model)->asString() . "/$id",
             ['headers' => $this->authHeaders()->asKeyValue()]
         );
     }
 
-    public function editClient($validated, int $id)
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    public function editClient($validated, int $id): void
     {
         $this->client->request(
             'PUT',
@@ -122,13 +143,17 @@ class ClientApi
         )->getBody();
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
     public function searchClient(string $query)
     {
         $response = json_decode(
             strval(
                 $this->client->request(
                     'GET',
-                    uri($this->model)->asString() . "/clientsSearchData?search_query={$query}",
+                    uri($this->model)->asString() . "/clientsSearchData?search_query=$query",
                     [
                         'headers' => $this->authHeaders()->asKeyValue(),
                     ]
@@ -139,9 +164,17 @@ class ClientApi
         return $response['data'][$this->model];
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
     public function getPetsByClientId(int $id)
     {
-        $paged = PagedQuery::forGettingAll(new Query(new Sorts(),
+        $paged = PagedQuery::forGettingAll(new Query(new Sorts(
+            new AscBy(
+                new Property('id')
+            )
+        ),
             new Filters(
                 new NotEqualTo(
                     new Property('status'),
@@ -151,7 +184,6 @@ class ClientApi
                     new Property('owner_id'),
                     new StringValue($id)
                 ),
-
             )));
         $model = 'pet';
 

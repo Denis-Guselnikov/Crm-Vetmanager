@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PetRequest;
-use App\Services\VetmanagerApi;
+use App\Services\PetApi;
+
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -43,7 +44,7 @@ class PetController extends Controller
     public function store(PetRequest $request)
     {
         $validated = $request->validated();
-        (new VetmanagerApi(auth()->user()))->create(VetmanagerApi::PET, $validated);
+        (new PetApi(Auth::user(), self::PET))->createPet($validated);
         return redirect("/clients/{$validated['owner_id']}");
     }
 
@@ -56,7 +57,7 @@ class PetController extends Controller
      */
     public function show(int $id)
     {
-        $pet = (new VetmanagerApi(Auth::user()))->getOne(VetmanagerApi::PET, $id);
+        $pet = (new PetApi(Auth::user(), self::PET))->getPet($id);
         return view('pets.show', compact('pet'));
     }
 
@@ -69,7 +70,7 @@ class PetController extends Controller
      */
     public function edit(int $id)
     {
-        $infoPet = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::PET, $id);
+        $infoPet = (new PetApi(Auth::user(), self::PET))->getPet($id);
         return view('pets.edit', compact('id', 'infoPet'));
     }
 
@@ -84,7 +85,7 @@ class PetController extends Controller
     public function update(PetRequest $request, int $id)
     {
         $validated = $request->validated();
-        (new VetmanagerApi(auth()->user()))->edit(VetmanagerApi::PET, $validated, $id);
+        (new PetApi(Auth::user(), self::PET))->editPet($validated, $id);
         return redirect("pet/$id");
     }
 
@@ -97,8 +98,8 @@ class PetController extends Controller
      */
     public function destroy(int $id)
     {
-        $pet = (new VetmanagerApi(auth()->user()))->getOne(VetmanagerApi::PET, $id);
-        (new VetmanagerApi(auth()->user()))->delete(VetmanagerApi::PET, $id);
+        $pet = (new PetApi(Auth::user(), self::PET))->getPet($id);
+        (new PetApi(Auth::user(), self::PET))->deletePet($id);
         return redirect("clients/{$pet['owner_id']}");
     }
 }

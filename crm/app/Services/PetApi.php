@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use App\Models\User;
+use GuzzleHttp\Exception\GuzzleException;
+
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\WithAuth;
@@ -12,7 +15,7 @@ class PetApi
 {
     private Client $client;
     private $key;
-    private $model;
+    private string $model;
 
     public function __construct(User $user, $model)
     {
@@ -21,7 +24,6 @@ class PetApi
         $this->model = $model;
     }
 
-    // Api key auth
     private function authHeaders(): WithAuth
     {
         return new WithAuth(
@@ -31,6 +33,10 @@ class PetApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
     public function getPet(int $id)
     {
         $response = json_decode(
@@ -46,7 +52,11 @@ class PetApi
         return $response['data'][$this->model];
     }
 
-    public function createPet($validated)
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
+    public function createPet($validated): void
     {
         $this->client->request(
             'POST',
@@ -58,16 +68,23 @@ class PetApi
         );
     }
 
-
-    public function deletePet(int $id)
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
+    public function deletePet(int $id): void
     {
-        $this->client->deleteClient(
+        $this->client->delete(
             uri($this->model)->asString() . "/$id",
             ['headers' => $this->authHeaders()->asKeyValue()]
         );
     }
 
-    public function editPet($validated, int $id)
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
+    public function editPet($validated, int $id): void
     {
         $this->client->request(
             'PUT',
