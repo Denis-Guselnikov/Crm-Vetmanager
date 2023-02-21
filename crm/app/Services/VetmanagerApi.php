@@ -227,7 +227,6 @@ class VetmanagerApi
             ),
             true
         );
-
         if (
             filter_var(
                 $response['success'],
