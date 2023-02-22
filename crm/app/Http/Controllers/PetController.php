@@ -9,15 +9,18 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
     const PET = 'pet';
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -37,8 +40,8 @@ class PetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param PetRequest $request
+     * @return Application|Redirector|RedirectResponse
      * @throws GuzzleException
      */
     public function store(PetRequest $request)
@@ -52,7 +55,7 @@ class PetController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      * @throws GuzzleException
      */
     public function show(int $id)
@@ -65,7 +68,7 @@ class PetController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      * @throws GuzzleException
      */
     public function edit(int $id)
@@ -77,9 +80,9 @@ class PetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param PetRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Redirector|RedirectResponse
      * @throws GuzzleException
      */
     public function update(PetRequest $request, int $id)
@@ -93,13 +96,12 @@ class PetController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      * @throws GuzzleException
      */
     public function destroy(int $id)
     {
-        $pet = (new PetApi(Auth::user(), self::PET))->getPet($id);
         (new PetApi(Auth::user(), self::PET))->deletePet($id);
-        return redirect("clients/{$pet['owner_id']}");
+        return back();
     }
 }

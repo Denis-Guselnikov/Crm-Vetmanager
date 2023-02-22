@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\VetmanagerApi;
+use App\Services\UserSettingsApi;
 use Closure;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +22,7 @@ class CheckUserSetting
     public function handle(Request $request, Closure $next)
     {
         try {
-            VetmanagerApi::checkUserSettings(
+            UserSettingsApi::checkUserSettings(
                 auth()->user()->userSettingApi->key,
                 auth()->user()->userSettingApi->url
             );

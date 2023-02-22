@@ -12,7 +12,7 @@ use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 
 use function Otis22\VetmanagerRestApi\uri;
 
-class VetmanagerApi
+class UserSettingsApi
 {
     /**
      * @throws GuzzleException
